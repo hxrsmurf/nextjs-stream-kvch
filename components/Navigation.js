@@ -1,6 +1,7 @@
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
 import Container from 'react-bootstrap/Container'
+import Link from 'next/link'
 
 export default function Navigation() {
   return (
@@ -8,8 +9,12 @@ export default function Navigation() {
         <Container>
             <Navbar.Brand href="/">Streaming</Navbar.Brand>
             <Nav className='me-auto'>
-                <Nav.Link href="/">Home</Nav.Link>
-                <Nav.Link href="/tv">TV</Nav.Link>
+              <Link href='/' passHref>
+                <Nav.Link>Home</Nav.Link>
+              </Link>
+              <Link href='/tv' passHref>
+                <Nav.Link>TV</Nav.Link>
+              </Link>
             </Nav>
         </Container>
     </Navbar>
