@@ -1,32 +1,47 @@
 import { loadtv } from "../../lib/fetch-tv"
-import { Container, Row, Col, Modal, Button } from "react-bootstrap";
-
-import { useRouter } from "next/router"
-import Navigation from "../../components/Navigation"
+import { Container, Modal, Button } from "react-bootstrap";
 import { useEffect, useState } from "react";
 
 function simulateNetworkRequest(){
-  return new Promise((resolve)=> setTimeout(resolve,5000))
+  return new Promise((resolve)=> setTimeout(resolve,50))
+}
+
+function VerticleModal(props){
+  return (
+    <Modal {...props} size='lg' centered fullscreen>
+      <Modal.Header closeButton>
+        <Modal.Title>{props.title}</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        VideoJS
+      </Modal.Body>
+      <Modal.Footer>
+        <Button onClick={props.onHide}>
+          Close
+        </Button>
+      </Modal.Footer>
+    </Modal>
+  )
 }
 
 export default function handler({episode}) {
   const list_of_episodes = episode.episodes
   const season_name = episode.name
 
-  const [show, setShow] = useState(false)
+  const [modalShow, setModalShow] = useState(false)
   const [isLoading, setLoading] = useState(false)
 
   useEffect(()=> {
     if (isLoading) {
       simulateNetworkRequest().then(()=>{
         setLoading(false)
-        setShow(true)
+        setModalShow(true)
       })
     }
   }, [isLoading])
 
   const handleClose = () => {
-    setShow(false)
+    setModalShow(false)
     setLoading(false)
   }
   const handleShow =() => {
@@ -37,7 +52,6 @@ export default function handler({episode}) {
     <Container className='mt-5'>
     <h3>{season_name}</h3>
       {list_of_episodes.map((episode, index)=> (
-
         <div key={index}>
           <Button
             variant="outline-dark"
@@ -45,24 +59,10 @@ export default function handler({episode}) {
             disabled={isLoading}
             onClick={!isLoading ? handleShow : null}
           >
-
           {isLoading ? 'Loading...' : `${episode.name}` }
-
           </Button>
-        <Modal show={show} onHide={handleClose}>
-          <Modal.Header closeButton>
-            <Modal.Title>Test</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            test
-          </Modal.Body>
-          <Modal.Footer>
-            <Button onClick={handleClose}>
-              Close
-            </Button>
-          </Modal.Footer>
 
-        </Modal>
+          <VerticleModal title={episode.name} show={modalShow} onHide={()=> setModalShow(false)} />
         </div>
       ))}
     </Container>
