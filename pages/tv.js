@@ -1,29 +1,29 @@
-import { Container } from "react-bootstrap";
+import { Container, Row, Col, Image } from "react-bootstrap";
 import Navigation from "../components/Navigation";
 
 import { loadtv } from "../lib/fetch-tv";
 
-export default function tv(props) {
+const image_url = 'https://image.tmdb.org/t/p/w500'
 
-    const tv_poster = props.tv['result_tv_poster']
-    const episodes = props.tv['episodes']
+export default function tv( {tv} ) {
+  //console.log(tv)
 
   return (
     <>
         <Navigation/>
         <Container className='mt-5'>
-            <img src={tv_poster}></img>
-            {episodes.map((episode, index) =>(
-              <div key={index}>
+        <Container>
 
-                {episode.episodes.map((e, index)=> (
-                  <div key={index}>
-                    {e.name}
-
-                  </div>
-                ))}
-                </div>
+        <Row>
+            {tv.results.map((result, index)=> (
+              <Col xs={4} md={6} key={index}>
+                <a href={'zoids/' + result.id}>
+                    <img src={image_url + result.poster_path} className='img-fluid rounded mt-2 border border-dark' />
+                </a>
+              </Col>
             ))}
+            </Row>
+        </Container>
         </Container>
     </>
   )
