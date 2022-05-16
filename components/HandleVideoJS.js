@@ -1,7 +1,29 @@
 import { Container } from "react-bootstrap"
 import Player from "./Player"
+import config from "../lib/config"
 
-export default function HandleVideoJS() {
+export default function HandleVideoJS( props ) {
+  const episode_data = props.data.episode
+  const season_data = props.data.season
+  const video_url = config().base_video
+
+  if (season_data < 10) {
+    var season = 'S0' + season_data
+  } else {
+    var season = 'S' + season_data
+  }
+
+  if (episode_data < 10) {
+    var episode = 'E0' + episode_data
+  } else {
+    var episode = 'E' + episode_data
+  }
+
+  const video_path = `${season}${episode}`
+
+  const video_source = `${video_url}/${video_path}/${video_path}${config().video_extension}`
+  console.log(video_source)
+
   const videoJsOptions = {
     controls: true,
     preload: 'auto',
@@ -11,16 +33,17 @@ export default function HandleVideoJS() {
     autoplay: true,
     sources: [
       {
-        src: '/37419/1.m3u8',
-        type: 'application/x-mpegURL'
+        src: video_source,
+        type: config().video_type
       }
     ]
   }
+  console.log(videoJsOptions)
 
   return (
     <>
       <Container>
-        <Player {...videoJsOptions}/>
+      <Player {...videoJsOptions}/>
       </Container>
     </>
   )

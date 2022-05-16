@@ -7,10 +7,10 @@ function VerticleModal(props){
   return (
     <Modal {...props} centered fullscreen>
       <Modal.Header closeButton>
-        <Modal.Title>{props.title}</Modal.Title>
+        <Modal.Title>{props.data.name}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <HandleVideoJS/>
+        <HandleVideoJS data={props.data}/>
       </Modal.Body>
       <Modal.Footer>
         <Button onClick={props.onHide}>
@@ -39,7 +39,13 @@ export default function handler({episode}) {
               variant='outline-dark'
               className='mt-2'
               onClick={()=> {
-                setModalData(episode.name)
+                setModalData(
+                  {
+                    name : episode.name,
+                    season: episode.season_number,
+                    episode: episode.episode_number
+                  }
+                  )
                 setModalIsOpen(true)
               }}
             >
@@ -52,7 +58,7 @@ export default function handler({episode}) {
       <VerticleModal
         show={modalIsOpen}
         onHide={()=>setModalIsOpen(false)}
-        title={modalData}
+        data={modalData}
       />
       </Container>
     </>
