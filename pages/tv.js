@@ -2,7 +2,6 @@ import { Container, Row, Col, Image } from "react-bootstrap";
 
 import { loadtv } from "../lib/fetch-tv";
 
-
 const image_url = 'https://image.tmdb.org/t/p/w500'
 
 export default function tv( {tv} ) {

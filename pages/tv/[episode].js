@@ -1,19 +1,16 @@
 import { loadtv } from "../../lib/fetch-tv"
-import { Container, Modal, Button } from "react-bootstrap";
+import { Container, Modal, Button, Row, Col} from "react-bootstrap";
 import { useEffect, useState } from "react";
-
-function simulateNetworkRequest(){
-  return new Promise((resolve)=> setTimeout(resolve,50))
-}
+import HandleVideoJS from "../../components/HandleVideoJS";
 
 function VerticleModal(props){
   return (
-    <Modal {...props} size='lg' centered fullscreen>
+    <Modal {...props} centered fullscreen>
       <Modal.Header closeButton>
         <Modal.Title>{props.title}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        VideoJS
+        <HandleVideoJS/>
       </Modal.Body>
       <Modal.Footer>
         <Button onClick={props.onHide}>
@@ -28,44 +25,37 @@ export default function handler({episode}) {
   const list_of_episodes = episode.episodes
   const season_name = episode.name
 
-  const [modalShow, setModalShow] = useState(false)
-  const [isLoading, setLoading] = useState(false)
-
-  useEffect(()=> {
-    if (isLoading) {
-      simulateNetworkRequest().then(()=>{
-        setLoading(false)
-        setModalShow(true)
-      })
-    }
-  }, [isLoading])
-
-  const handleClose = () => {
-    setModalShow(false)
-    setLoading(false)
-  }
-  const handleShow =() => {
-    setLoading(true)
-  }
+  const [modalIsOpen, setModalIsOpen] = useState(false)
+  const [modalData, setModalData] = useState(false)
 
   return (
-    <Container className='mt-5'>
-    <h3>{season_name}</h3>
-      {list_of_episodes.map((episode, index)=> (
-        <div key={index}>
-          <Button
-            variant="outline-dark"
-            className='mt-2'
-            disabled={isLoading}
-            onClick={!isLoading ? handleShow : null}
-          >
-          {isLoading ? 'Loading...' : `${episode.name}` }
+    <>
+      <Container className='mt-5'>
+      <h3>{season_name}</h3>
+      {list_of_episodes.map((episode, index) => (
+        <Row key={index}>
+          <Col>
+            <Button
+              variant='outline-dark'
+              className='mt-2'
+              onClick={()=> {
+                setModalData(episode.name)
+                setModalIsOpen(true)
+              }}
+            >
+            {episode.name}
           </Button>
-
-          <VerticleModal title={episode.name} show={modalShow} onHide={()=> setModalShow(false)} />
-        </div>
+          </Col>
+        </Row>
       ))}
-    </Container>
+
+      <VerticleModal
+        show={modalIsOpen}
+        onHide={()=>setModalIsOpen(false)}
+        title={modalData}
+      />
+      </Container>
+    </>
   )
 }
 
