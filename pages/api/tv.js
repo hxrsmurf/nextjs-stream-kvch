@@ -1,5 +1,3 @@
-import tmdb from "./components/tmdb"
-
 const api = process.env.TMDB_API_KEY
 var tmdb_base_url = process.env.TMDB_BASE_URL
 
