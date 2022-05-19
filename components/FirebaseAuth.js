@@ -15,13 +15,8 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
-// Note that next-firebase-auth inits Firebase for us,
-// so we don't need to.
-
 const firebaseAuthConfig = {
   signInFlow: 'popup',
-  // Auth providers
-  // https://github.com/firebase/firebaseui-web#configure-oauth-providers
   signInOptions: [
       {
         provider: firebase.auth.GoogleAuthProvider.PROVIDER_ID,
@@ -30,11 +25,7 @@ const firebaseAuthConfig = {
   signInSuccessUrl: '/',
   credentialHelper: 'none',
   callbacks: {
-    // https://github.com/firebase/firebaseui-web#signinsuccesswithauthresultauthresult-redirecturl
-    signInSuccessWithAuthResult: () =>
-      // Don't automatically redirect. We handle redirects using
-      // `next-firebase-auth`.
-      false,
+    signInSuccessWithAuthResult: () => false,
   },
 }
 function logout(){
@@ -45,7 +36,6 @@ function logout(){
 const FirebaseAuth = () => {
   const [isSignedIn, setIsSignedIn] = useState(false); // Local signed-in state.
 
-  // Listen to the Firebase Auth state and set the local state.
   useEffect(() => {
     const unregisterAuthObserver = firebase.auth().onAuthStateChanged(user => {
       setIsSignedIn(!!user);
