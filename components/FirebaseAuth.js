@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
-import { Button, Container } from 'react-bootstrap';
+import { Button, Container, NavDropdown } from 'react-bootstrap';
 
 // Initialize Firebase
 const firebaseConfig = {
@@ -37,6 +37,10 @@ const firebaseAuthConfig = {
       false,
   },
 }
+function logout(){
+  firebase.auth().signOut()
+  localStorage.clear()
+}
 
 const FirebaseAuth = () => {
   const [isSignedIn, setIsSignedIn] = useState(false); // Local signed-in state.
@@ -51,23 +55,20 @@ const FirebaseAuth = () => {
 
   if (!isSignedIn) {
     return (
-      <div>
-        <Container className='mt-5'>
         <StyledFirebaseAuth uiConfig={firebaseAuthConfig} firebaseAuth={firebase.auth()} />
-        </Container>
-        </div>
     );
   }
+
+  if (typeof window !== "undefined") {
+    localStorage.setItem('token', firebase.auth().currentUser.email)
+  }
+
   return (
-    <div>
-      <Container className='mt-5'>
-      <p>Welcome {firebase.auth().currentUser.displayName}! You are now signed-in!</p>
-      <Button onClick={() => firebase.auth().signOut()}>
-      Sign Out
-      </Button>
-      </Container>
-    </div>
-  );
+    <NavDropdown title={firebase.auth().currentUser.displayName}>
+      <NavDropdown.Item><a onClick={()=> logout()}>Logout</a></NavDropdown.Item>
+    </NavDropdown>
+  )
+
 }
 
 export default FirebaseAuth
