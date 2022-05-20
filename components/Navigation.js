@@ -3,10 +3,7 @@ import Nav from 'react-bootstrap/Nav'
 import Container from 'react-bootstrap/Container'
 import Link from 'next/link'
 import check_loggedin from '../lib/check_loggedin'
-import { NavDropdown } from 'react-bootstrap'
-import firebase from 'firebase/compat/app';
-import 'firebase/compat/auth';
-import FirebaseAuth from './FirebaseAuth'
+
 
 export default function Navigation() {
   const loggedin = check_loggedin()
@@ -21,9 +18,6 @@ export default function Navigation() {
               <Link href='/tv' passHref>
                 <Nav.Link>TV</Nav.Link>
               </Link>
-            </Nav>
-            <Nav>
-              <FirebaseAuth/>
             </Nav>
         </Container>
     </Navbar>

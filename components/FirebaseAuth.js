@@ -4,6 +4,7 @@ import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import { Button, Container, NavDropdown } from 'react-bootstrap';
+import { useRouter } from 'next/router';
 
 // Initialize Firebase
 const firebaseConfig = {
@@ -28,20 +29,22 @@ const firebaseAuthConfig = {
     signInSuccessWithAuthResult: () => false,
   },
 }
-function logout(){
-  firebase.auth().signOut()
-  localStorage.clear()
-}
-
 const FirebaseAuth = () => {
   const [isSignedIn, setIsSignedIn] = useState(false); // Local signed-in state.
-
   useEffect(() => {
     const unregisterAuthObserver = firebase.auth().onAuthStateChanged(user => {
       setIsSignedIn(!!user);
     });
     return () => unregisterAuthObserver(); // Make sure we un-register Firebase observers when the component unmounts.
   }, []);
+
+  useEffect(async ()=> {
+    const token = localStorage.getItem('token')
+
+    if (!token){
+      userRouter().push('/')
+    }
+  }, [])
 
   if (!isSignedIn) {
     return (
@@ -51,14 +54,8 @@ const FirebaseAuth = () => {
 
   if (typeof window !== "undefined") {
     localStorage.setItem('token', firebase.auth().currentUser.email)
+    useRouter().push('/')
   }
-
-  return (
-    <NavDropdown title={firebase.auth().currentUser.displayName}>
-      <NavDropdown.Item><a onClick={()=> logout()}>Logout</a></NavDropdown.Item>
-    </NavDropdown>
-  )
-
 }
 
 export default FirebaseAuth
