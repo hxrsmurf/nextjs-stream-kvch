@@ -2,6 +2,11 @@ import { loadtv } from "../../lib/fetch-tv"
 import { Container, Modal, Button, Row, Col} from "react-bootstrap";
 import { useEffect, useState } from "react";
 import HandleVideoJS from "../../components/HandleVideoJS";
+import { AuthAction, withAuthUser } from "next-firebase-auth";
+import Loader from "../../components/Loader";
+import initAuth from "../../utils/initAuth";
+
+initAuth()
 
 function VerticleModal(props){
   return (
@@ -21,7 +26,7 @@ function VerticleModal(props){
   )
 }
 
-export default function handler({episode}) {
+export function handler({episode}) {
   const list_of_episodes = episode.episodes
   const season_name = episode.name
 
@@ -64,6 +69,13 @@ export default function handler({episode}) {
     </>
   )
 }
+
+export default withAuthUser({
+  whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN,
+  whenUnauthedBeforeInit: AuthAction.SHOW_LOADER,
+  authPageURL: '/',
+  LoaderComponent: Loader,
+})(handler)
 
 export async function getStaticPaths() {
   const result = await loadtv()

@@ -1,11 +1,14 @@
+import { AuthAction, useAuthUser, withAuthUser } from "next-firebase-auth";
 import { Container, Row, Col, Image } from "react-bootstrap";
-
 import { loadtv } from "../lib/fetch-tv";
+import initAuth from "../utils/initAuth";
+import Loader from "../components/Loader";
 
 const image_url = 'https://image.tmdb.org/t/p/w500'
 
-export default function tv( {tv} ) {
-  //console.log(tv)
+initAuth()
+
+export function tv( {tv} ) {
   return (
     <>
         <Container className='mt-5'>
@@ -24,6 +27,13 @@ export default function tv( {tv} ) {
     </>
   )
 }
+
+export default withAuthUser({
+  whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN,
+  whenUnauthedBeforeInit: AuthAction.SHOW_LOADER,
+  authPageURL: '/',
+  LoaderComponent: Loader,
+})(tv)
 
 export async function getStaticProps(){
   const tv = await loadtv()

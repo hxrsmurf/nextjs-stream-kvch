@@ -1,12 +1,22 @@
-import FirebaseAuth from "../components/FirebaseAuth"
-import { Container } from "react-bootstrap"
+import { withAuthUser, AuthAction } from 'next-firebase-auth'
+import { Container } from 'react-bootstrap'
+import FirebaseAuth from '../components/FireBaseAuth'
+import Loader from '../components/Loader'
 
-export default function login() {
-    return (
-        <div>
-           <Container className='mt-5'>
+function login() {
+  return (
+    <>
+        <Container className='mt-5'>
+            Login Page
             <FirebaseAuth/>
-           </Container>
-        </div>
-    )
+        </Container>
+    </>
+  )
 }
+
+export default withAuthUser({
+  whenAuthed: AuthAction.REDIRECT_TO_APP,
+  whenUnauthedBeforeInit: AuthAction.SHOW_LOADER,
+  whenUnauthedAfterInit: AuthAction.RENDER,
+  LoaderComponent: Loader,
+})(login)

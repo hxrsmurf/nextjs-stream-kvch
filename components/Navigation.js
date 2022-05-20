@@ -3,10 +3,14 @@ import Nav from 'react-bootstrap/Nav'
 import Container from 'react-bootstrap/Container'
 import Link from 'next/link'
 import check_loggedin from '../lib/check_loggedin'
+import { useAuthUser, withAuthUser } from 'next-firebase-auth'
+import { Dropdown, NavDropdown } from 'react-bootstrap'
+import FirebaseAuth from './FireBaseAuth'
 
 
-export default function Navigation() {
+export function Navigation() {
   const loggedin = check_loggedin()
+  const AuthUser = useAuthUser()
   return (
     <Navbar bg='dark' variant='dark'>
         <Container>
@@ -19,7 +23,18 @@ export default function Navigation() {
                 <Nav.Link>TV</Nav.Link>
               </Link>
             </Nav>
+            <Nav>
+            {!AuthUser.email ? (
+              <><FirebaseAuth/></>) : (
+               <NavDropdown title={AuthUser.displayName} id='nav-dropdown'>
+                 <NavDropdown.Item onClick={() => {AuthUser.signOut()}}>Logout</NavDropdown.Item>
+               </NavDropdown>
+
+            )}
+            </Nav>
         </Container>
     </Navbar>
   )
 }
+
+export default withAuthUser()(Navigation)
