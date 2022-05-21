@@ -19,6 +19,7 @@
     "react-bootstrap": "^2.4.0",
     "react-dom": "18.1.0",
     "react-firebaseui": "^6.0.0",
+    "twilio": "^3.77.1",
     "video.js": "^7.18.1"
   },
   "devDependencies": {
