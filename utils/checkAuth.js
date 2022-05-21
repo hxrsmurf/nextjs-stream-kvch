@@ -5,7 +5,7 @@ export default async function checkAuth(user) {
     const res = await fetch(url)
     const data = await res.json()
 
-    if (data.authorized === true) {
+    if (!data.authorized === true) {
         location.replace('/register')
     }
     return Loader
