@@ -1,6 +1,6 @@
 import { withAuthUser, AuthAction } from 'next-firebase-auth'
 import { Container } from 'react-bootstrap'
-import FirebaseAuth from '../components/FireBaseAuth'
+import FirebaseAuth from '../components/FirebaseAuth'
 import Loader from '../components/Loader'
 
 function login() {

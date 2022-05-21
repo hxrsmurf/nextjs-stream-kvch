@@ -4,7 +4,7 @@ import Container from 'react-bootstrap/Container'
 import Link from 'next/link'
 import { useAuthUser, withAuthUser } from 'next-firebase-auth'
 import { Dropdown, NavDropdown } from 'react-bootstrap'
-import FirebaseAuth from './FireBaseAuth'
+import FirebaseAuth from './FirebaseAuth'
 
 
 export function Navigation() {
