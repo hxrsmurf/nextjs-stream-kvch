@@ -2,6 +2,7 @@ import { useAuthUser, withAuthUser } from "next-firebase-auth";
 import { useEffect, useState } from "react";
 import { Button, Col, Container, Form, FormGroup, FormLabel } from "react-bootstrap";
 import Loader from "../components/Loader";
+import twilio from "../lib/twilio";
 
 export function register() {
   const AuthUser = useAuthUser()
@@ -10,10 +11,12 @@ export function register() {
   const submit = (e) => {
         e.preventDefault()
         if (!email){
-            console.log(AuthUser.email)
+            var registered_email = AuthUser.email
         } else {
-            console.log(email)
+            var registered_email = email
         }
+        twilio(registered_email)
+        //location.replace('/thanks')
     }
 
   return (
