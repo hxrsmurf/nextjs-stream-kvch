@@ -3,12 +3,16 @@ import { Container, Row, Col, Image } from "react-bootstrap";
 import { loadtv } from "../lib/fetch-tv";
 import initAuth from "../utils/initAuth";
 import Loader from "../components/Loader";
+import checkAuth from "../utils/checkAuth";
 
 const image_url = 'https://image.tmdb.org/t/p/w500'
 
 initAuth()
 
 export function tv( {tv} ) {
+  const AuthUser = useAuthUser()
+  checkAuth(AuthUser)
+
   return (
     <>
         <Container className='mt-5'>
