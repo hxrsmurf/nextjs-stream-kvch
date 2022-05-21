@@ -21,7 +21,11 @@ export function tv( {tv} ) {
             {tv.results.map((result, index)=> (
               <Col xs={4} md={6} key={index}>
                 <a href={'tv/' + result.id}>
-                    <img src={image_url + result.poster_path} className='img-fluid rounded mt-2 border border-dark' />
+                    <Image
+                      src={image_url + result.poster_path}
+                      className='img-fluid rounded mt-2 border border-dark'
+                      alt='poster'
+                      />
                 </a>
               </Col>
             ))}
