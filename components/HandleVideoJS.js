@@ -5,7 +5,8 @@ import config from "../lib/config"
 export default function HandleVideoJS( props ) {
   const episode_data = props.data.episode
   const season_data = props.data.season
-  const video_url = config().base_video
+  const season_id = props.data.season_id
+  const video_url = config().video_url
 
   if (season_data < 10) {
     var season = 'S0' + season_data
@@ -21,8 +22,7 @@ export default function HandleVideoJS( props ) {
 
   const video_path = `${season}${episode}`
 
-  const video_source = `${video_url}/${video_path}/${video_path}${config().video_extension}`
-  console.log(video_source)
+  const video_source = `${video_url}/${season_id}/${video_path}/${video_path}${config().video_extension}`
 
   const videoJsOptions = {
     controls: true,
@@ -38,7 +38,6 @@ export default function HandleVideoJS( props ) {
       }
     ]
   }
-  console.log(videoJsOptions)
 
   return (
     <>

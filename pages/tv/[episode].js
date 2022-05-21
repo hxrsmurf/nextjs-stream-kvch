@@ -29,6 +29,7 @@ function VerticleModal(props){
 export function handler({episode}) {
   const list_of_episodes = episode.episodes
   const season_name = episode.name
+  const season_id = episode.id
 
   const [modalIsOpen, setModalIsOpen] = useState(false)
   const [modalData, setModalData] = useState(false)
@@ -48,7 +49,8 @@ export function handler({episode}) {
                   {
                     name : episode.name,
                     season: episode.season_number,
-                    episode: episode.episode_number
+                    episode: episode.episode_number,
+                    season_id: season_id
                   }
                   )
                 setModalIsOpen(true)
