@@ -8,7 +8,6 @@ const headers = {
 
 async function query(query) {
     const url = base_url + '/tv/' + query.season + '/season/1'
-    console.log(url)
     const fetch_result = await fetch(url, {headers})
     const query_result  = await fetch_result.json()
     return query_result
