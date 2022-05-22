@@ -4,11 +4,17 @@ import Loader from "../components/Loader"
 import { fetchFirebaseUsers } from "../lib/fetchFirebaseUsers"
 import { fetchFirebaseTV } from "../lib/fetchFirebaseTV"
 import { useState } from "react"
+import { addFirebaseTV } from "../lib/addFirebaseTV"
 
 export function admin({users, tv}) {
   const AuthUser = useAuthUser()
   const [modalOpen, setModalOpen] = useState(false)
   const [newTV, setNewTV] = useState()
+
+  const addTVShow = () => {
+    addFirebaseTV(newTV)
+  }
+
   return (
     <>
         <Container className='mt-5'>
@@ -53,7 +59,6 @@ export function admin({users, tv}) {
             <Table striped bordered hover variant="dark" >
               <thead>
                 <tr>
-                    <th>id</th>
                     <th>Show</th>
                 </tr>
               </thead>
@@ -61,9 +66,6 @@ export function admin({users, tv}) {
               <tbody>
                 {tv.map((t, index)=>(
                   <tr key={index}>
-                    <td>
-                      {t.id}
-                    </td>
                     <td key={index}>
                       {t.name}
                     </td>
@@ -93,7 +95,7 @@ export function admin({users, tv}) {
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={()=> {setModalOpen(false)}}>Close</Button>
-            <Button variant="success" onClick={()=>{setModalOpen(false)}}>Add</Button>
+            <Button variant="success" onClick={()=>{setModalOpen(false); addTVShow()}}>Add</Button>
           </Modal.Footer>
 
         </Modal>
