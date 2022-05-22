@@ -1,11 +1,19 @@
 export default function users(req, res) {
-   const authorizedUsers = process.env.AUTHORIZED_USERS
-   const requestedUser = req.query.email
-   var authorized = false
+    const referrer = req.headers.referer.split('/')[3]
+    const requestedUser = req.query.email
+    var authorized = false
 
-   if (authorizedUsers.includes(requestedUser)){
-       var authorized = true
-   }
+    if (referrer === 'tv') {
+        var authorizedUsers = process.env.AUTHORIZED_USERS
+    } else if (referrer === 'admin') {
+        var authorizedUsers = process.env.ADMIN_USERS
+    } else {
+        var authorizedUsers = process.env.ADMIN_USERS
+    }
 
-   res.status(200).json({'authorized': authorized})
+    if (authorizedUsers.includes(requestedUser)){
+        var authorized = true
+    }
+
+    res.status(200).json({'authorized': authorized})
 }

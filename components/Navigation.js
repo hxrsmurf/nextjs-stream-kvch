@@ -3,12 +3,12 @@ import Nav from 'react-bootstrap/Nav'
 import Container from 'react-bootstrap/Container'
 import Link from 'next/link'
 import { useAuthUser, withAuthUser } from 'next-firebase-auth'
-import { Dropdown, NavDropdown } from 'react-bootstrap'
+import { NavDropdown } from 'react-bootstrap'
 import FirebaseAuth from './FirebaseAuth'
-
 
 export function Navigation() {
   const AuthUser = useAuthUser()
+
   return (
     <Navbar bg='dark' variant='dark'>
         <Container>
@@ -23,12 +23,17 @@ export function Navigation() {
             </Nav>
             <Nav>
             {!AuthUser.email ? (
-              <><FirebaseAuth/></>) : (
+                <><FirebaseAuth/></>
+              ) : (
                <NavDropdown title={AuthUser.displayName} id='nav-dropdown'>
+                {AuthUser.email === 'stream@hxrsmurf.info' ? (
+                  <NavDropdown.Item onClick={()=> location.replace('/admin')}>Admin</NavDropdown.Item>
+                    ) : null
+                  }
                  <NavDropdown.Item onClick={() => {AuthUser.signOut()}}>Logout</NavDropdown.Item>
                </NavDropdown>
-
-            )}
+              )
+            }
             </Nav>
         </Container>
     </Navbar>
