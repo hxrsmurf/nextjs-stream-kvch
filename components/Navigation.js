@@ -5,9 +5,25 @@ import Link from 'next/link'
 import { useAuthUser, withAuthUser } from 'next-firebase-auth'
 import { NavDropdown } from 'react-bootstrap'
 import FirebaseAuth from './FirebaseAuth'
+import checkFirebaseAdmin from '../utils/checkFirebaseAdmin'
+import { useEffect, useState } from 'react'
+import initAuth from '../utils/initAuth'
+
+initAuth()
 
 export function Navigation() {
   const AuthUser = useAuthUser()
+  const [authed, setAuthed] = useState()
+
+  // Doesn't work yet...
+  useEffect(async () => {
+    const result = await checkFirebaseAdmin(AuthUser).then((result)=> {return result})
+    result.map((r)=>{
+      if(r.email === AuthUser.email){
+        setAuthed(r.admin)
+      }
+    })
+  }, [])
 
   return (
     <Navbar bg='dark' variant='dark'>
@@ -26,7 +42,7 @@ export function Navigation() {
                 <><FirebaseAuth/></>
               ) : (
                <NavDropdown title={AuthUser.displayName} id='nav-dropdown'>
-                {AuthUser.email === 'stream@hxrsmurf.info' ? (
+                {authed ? (
                   <NavDropdown.Item onClick={()=> location.replace('/admin')}>Admin</NavDropdown.Item>
                     ) : null
                   }
