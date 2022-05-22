@@ -1,17 +1,11 @@
 import { AuthAction, useAuthUser, withAuthUser, getFirebaseAdmin } from "next-firebase-auth"
 import { Container, Table } from "react-bootstrap"
 import Loader from "../components/Loader"
-import checkAuth from "../utils/checkAuth"
-import initAuth from "../utils/initAuth"
-
 import { fetchFirebaseUsers } from "../lib/fetchFirebaseUsers"
+import { fetchFirebaseTV } from "../lib/fetchFirebaseTV"
 
-initAuth()
-
-export function admin({users}) {
+export function admin({users, tv}) {
   const AuthUser = useAuthUser()
-  checkAuth(AuthUser)
-
   return (
     <>
         <Container className='mt-5'>
@@ -41,6 +35,29 @@ export function admin({users}) {
                 ))}
               </tbody>
             </Table>
+
+            <h1>TV Shows</h1>
+            <Table striped bordered hover variant="dark" >
+              <thead>
+                <tr>
+                    <th>id</th>
+                    <th>Show</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {tv.map((t, index)=>(
+                  <tr key={index}>
+                    <td>
+                      {t.id}
+                    </td>
+                    <td key={index}>
+                      {t.name}
+                    </td>
+                  </tr>
+                ))}
+                </tbody>
+            </Table>
         </Container>
     </>
   )
@@ -55,9 +72,11 @@ export default withAuthUser({
 
 export async function getServerSideProps(){
   const users = await fetchFirebaseUsers()
+  const tv = await fetchFirebaseTV()
   return {
     props: {
-      users
+      users,
+      tv
     }
   }
 }
