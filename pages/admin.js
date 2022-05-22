@@ -30,8 +30,8 @@ export function admin({users}) {
               </thead>
               <tbody>
                 {users.map((user, index)=>(
-                  <tr>
-                    <td key={index}>
+                  <tr key={index}>
+                    <td>
                       {user.email}
                     </td>
                     <td key={index}>
