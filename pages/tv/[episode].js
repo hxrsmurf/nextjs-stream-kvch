@@ -18,7 +18,7 @@ function VerticleModal(props){
         <HandleVideoJS data={props.data}/>
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={props.onHide}>
+        <Button variant="secondary" onClick={props.onHide}>
           Close
         </Button>
       </Modal.Footer>
