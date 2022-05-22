@@ -1,11 +1,14 @@
 import { AuthAction, useAuthUser, withAuthUser, getFirebaseAdmin } from "next-firebase-auth"
-import { Container, Table } from "react-bootstrap"
+import { Button, Col, Container, Form, Modal, ModalHeader, Row, Table } from "react-bootstrap"
 import Loader from "../components/Loader"
 import { fetchFirebaseUsers } from "../lib/fetchFirebaseUsers"
 import { fetchFirebaseTV } from "../lib/fetchFirebaseTV"
+import { useState } from "react"
 
 export function admin({users, tv}) {
   const AuthUser = useAuthUser()
+  const [modalOpen, setModalOpen] = useState(false)
+  const [newTV, setNewTV] = useState()
   return (
     <>
         <Container className='mt-5'>
@@ -36,7 +39,17 @@ export function admin({users, tv}) {
               </tbody>
             </Table>
 
-            <h1>TV Shows</h1>
+            <Row>
+              <Col>
+                <h1>TV Shows</h1>
+              </Col>
+              <Col>
+                <Button className="mt-2" onClick={()=> {setModalOpen(true)}}>
+                  Add
+                </Button>
+              </Col>
+
+            </Row>
             <Table striped bordered hover variant="dark" >
               <thead>
                 <tr>
@@ -59,6 +72,31 @@ export function admin({users, tv}) {
                 </tbody>
             </Table>
         </Container>
+
+        <Modal
+        show={modalOpen}
+        onHide={()=> {setModalOpen(false)}}
+        centered
+        >
+          <Modal.Header>
+            <Modal.Title>Add TV Show</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form>
+              <Form.Group>
+                <Form.Control
+                as="textarea" rows={2}
+                onChange={(e)=> setNewTV(e.target.value)}
+                />
+              </Form.Group>
+            </Form>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={()=> {setModalOpen(false)}}>Close</Button>
+            <Button variant="success" onClick={()=>{setModalOpen(false)}}>Add</Button>
+          </Modal.Footer>
+
+        </Modal>
     </>
   )
 }
