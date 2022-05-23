@@ -1,10 +1,10 @@
-import { useRouter } from "next/router";
 import { Container } from "react-bootstrap";
-import {fetchShow} from "../../lib/fetchShow";
 
-export default function show({show}) {
+const image_url = 'https://image.tmdb.org/t/p/w500/'
+
+export default function show({show, params}) {
   const showDetails = show[0]
-  console.log(show)
+  console.log(params)
 
   return (
     <>
@@ -28,7 +28,7 @@ export async function getStaticPaths() {
       {
         params:
         {
-          show: 'Zoids'
+          show: '134-Zoids'
         },
       }
     ],
@@ -37,13 +37,14 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps( {params} ){
-  //const query = await fetch('http://localhost:3000/api/shows?show=' + params.show)
-  const url = 'http://localhost:3000/api/shows?show=' + params.show
+  const searchShow = (params.show).split('-')[1]
+  const url = 'http://localhost:3000/api/shows?show=' + searchShow
   const query = await fetch(url)
   const result = await query.json()
   return {
     props: {
-      show: result.results
+      show: result.results,
+      params
     }
   }
 }
