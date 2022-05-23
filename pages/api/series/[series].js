@@ -8,7 +8,6 @@ export default async function handler(req, res) {
 }
 
 async function query(series) {
-    //console.log(series)
     const url = base_url + '/search/tv/?query=' + searchTerm
     const fetch_result = await fetch(url, {headers})
     const query_result  = await fetch_result.json()

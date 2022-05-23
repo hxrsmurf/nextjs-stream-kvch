@@ -4,7 +4,6 @@ const image_url = 'https://image.tmdb.org/t/p/w500/'
 
 export default function show({show, params}) {
   const showDetails = show[0]
-  console.log(params)
 
   return (
     <>

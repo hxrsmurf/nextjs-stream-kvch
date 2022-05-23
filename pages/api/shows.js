@@ -8,7 +8,6 @@ const headers = {
 export default async function shows(req,res) {
     if (req.query){
         const searchURL = apiURL + '/search/tv?query=' + req.query.show
-        console.log(searchURL)
         const fetch_result = await fetch(searchURL, {headers})
         const query_result  = await fetch_result.json()
         res.status(200).json(query_result)
