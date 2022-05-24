@@ -1,53 +1,29 @@
-import { AuthAction, useAuthUser, withAuthUser } from "next-firebase-auth";
-import { Container, Row, Col, Image } from "react-bootstrap";
-import { loadtv } from "../lib/fetch-tv";
-import initAuth from "../utils/initAuth";
-import Loader from "../components/Loader";
-import checkAuth from "../utils/checkAuth";
+import { Col, Container, Image, Row } from "react-bootstrap";
+import config from "../lib/config";
+import fetchFirebaseTV from "../lib/fetchFirebaseTV";
+const image_url = config().tmdb_image_url
 
-const image_url = 'https://image.tmdb.org/t/p/w500'
-
-initAuth()
-
-export function tv( {tv} ) {
-  const AuthUser = useAuthUser()
-  checkAuth(AuthUser)
-
+export default function index({seriesFirebase}) {
   return (
-    <>
-        <Container className='mt-5'>
-        <Container>
+      <>
+      <Container className='mt-5'>
         <Row>
-            {tv.results.map((result, index)=> (
-              <Col xs={4} md={6} key={index}>
-                <a href={'tv/' + result.id}>
-                    <Image
-                      src={image_url + result.poster_path}
-                      className='img-fluid rounded mt-2 border border-dark'
-                      alt='poster'
-                      />
-                </a>
-              </Col>
-            ))}
-            </Row>
-        </Container>
-        </Container>
-    </>
+              {seriesFirebase.map((data, index)=> (
+                  <Col key={index}>
+                    <a  href={'tv/' + data.id + '-' + data.name}><Image src={image_url + data.poster}></Image></a>
+                  </Col>
+              ))}
+        </Row>
+      </Container>
+      </>
   )
 }
 
-export default withAuthUser({
-  whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN,
-  whenUnauthedBeforeInit: AuthAction.SHOW_LOADER,
-  authPageURL: '/',
-  LoaderComponent: Loader,
-})(tv)
-
 export async function getStaticProps(){
-  const tv = await loadtv()
-  return {
-    props: {
-      tv
+    const seriesFirebase = await fetchFirebaseTV()
+    return {
+      props: {
+        seriesFirebase
+      }
     }
   }
-}
