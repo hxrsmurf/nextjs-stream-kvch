@@ -1,5 +1,5 @@
 import { Col, Container, Image, Row } from "react-bootstrap";
-import { fetchFirebaseTV } from "../../lib/fetchFirebaseTV";
+import fetchFirebaseTV from "../../lib/fetchFirebaseTV";
 
 const image_url = 'https://image.tmdb.org/t/p/w500/'
 
