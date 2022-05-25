@@ -9,7 +9,7 @@ export default function index({seriesFirebase}) {
       <Container className='mt-5'>
         <Row>
               {seriesFirebase.map((data, index)=> (
-                  <Col key={index}>
+                  <Col key={index} className='mt-5'>
                     <a  href={'tv/' + data.id + '-' + data.name}><Image src={image_url + data.poster}></Image></a>
                   </Col>
               ))}
