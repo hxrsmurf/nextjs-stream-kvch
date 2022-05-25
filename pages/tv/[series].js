@@ -3,12 +3,27 @@ import { Button, Card, Col, Container, Image, Modal, Row } from "react-bootstrap
 import config from "../../lib/config"
 import fetchFirebaseTV from "../../lib/fetchFirebaseTV"
 
+import HandleVideoJS from '../../components/HandleVideoJS'
+
+function VerticleModal(props){
+  return (
+    <Modal {...props} centered fullscreen>
+      <Modal.Header closeButton/>
+      <Modal.Title>{props.name}</Modal.Title>
+
+      <Modal.Body>
+        <HandleVideoJS data={props.data}/>
+      </Modal.Body>
+    </Modal>
+  )
+}
 
 export default function series({data, seasonData}) {
-  console.log(seasonData)
   const [season, setSeason] = useState()
   const [modalOpen, setModalOpen] = useState(false)
   const [episodeOpen, setEpisodeOpen] = useState()
+  const [episodeData, setEpisodeData] = useState()
+  const [episodeName, setEpisodeName] = useState()
 
   return (
     <>
@@ -47,7 +62,23 @@ export default function series({data, seasonData}) {
                     <Container>
                       <Card.Title className='mt-2'>{episode.episode_number}. {episode.name}</Card.Title>
                       <Card.Text>{episode.overview}</Card.Text>
-                      <Card.Footer className='mb-2'><Button onClick={()=>{setEpisodeOpen(true)}}>Watch</Button></Card.Footer>
+                      <Card.Footer className='mb-2'>
+                        <Button
+                          onClick={()=>{
+                            setEpisodeData({
+                              name: episode.name,
+                              episode: episode.episode_number,
+                              season: episode.season_number,
+                              season_id: seasonData.id,
+                              series_id: data.id
+                            })
+                            setEpisodeName(episode.name)
+                            setEpisodeOpen(true)
+                          }}
+                          >
+                          Watch
+                        </Button>
+                      </Card.Footer>
                     </Container>
                   </Card>
                 </Container>
@@ -57,6 +88,13 @@ export default function series({data, seasonData}) {
           </>
       ))}
     </Container>
+
+    <VerticleModal
+        show={episodeOpen}
+        onHide={()=>setEpisodeOpen(false)}
+        data={episodeData}
+        name={episodeName}
+      />
     </>
   )
 }

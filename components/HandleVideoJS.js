@@ -5,6 +5,7 @@ import config from "../lib/config"
 export default function HandleVideoJS( props ) {
   const episode_data = props.data.episode
   const season_data = props.data.season
+  const series_id = props.data.series_id
   const season_id = props.data.season_id
   const video_url = config().video_url
 
@@ -22,7 +23,7 @@ export default function HandleVideoJS( props ) {
 
   const video_path = `${season}${episode}`
 
-  const video_source = `${video_url}/${season_id}/${video_path}/${video_path}${config().video_extension}`
+  const video_source = `${video_url}/${series_id}/${season_id}/${video_path}/${video_path}${config().video_extension}`
 
   const videoJsOptions = {
     controls: true,
